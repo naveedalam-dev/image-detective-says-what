@@ -27,7 +27,6 @@ const SettingsPage = () => {
     phone: "+1 (555) 123-4567",
     email: "info@downtownpharmacy.com",
     taxRate: "8.5",
-    currency: "PKR",
     timezone: "Asia/Karachi"
   });
 

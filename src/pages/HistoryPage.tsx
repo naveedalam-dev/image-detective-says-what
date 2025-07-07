@@ -61,7 +61,7 @@ const HistoryPage = () => {
       id: "1",
       type: "order",
       title: "New Order Created",
-      description: "Order #ORD-2024-001 created by John Smith for $55.05",
+      description: "Order #ORD-2024-001 created by John Smith for ₹55.05",
       timestamp: new Date("2024-01-16T10:30:00"),
       user: "John Smith",
       status: "success",
@@ -72,7 +72,7 @@ const HistoryPage = () => {
       id: "2",
       type: "payment",
       title: "Payment Processed",
-      description: "Credit card payment of $55.05 processed successfully",
+      description: "Credit card payment of ₹55.05 processed successfully",
       timestamp: new Date("2024-01-16T10:32:00"),
       user: "System",
       status: "success",
@@ -144,7 +144,7 @@ const HistoryPage = () => {
       id: "9",
       type: "payment",
       title: "Payment Failed",
-      description: "Credit card payment of $41.02 failed - insufficient funds",
+      description: "Credit card payment of ₹41.02 failed - insufficient funds",
       timestamp: new Date("2024-01-15T11:30:00"),
       user: "System",
       status: "error",
@@ -443,7 +443,7 @@ const HistoryPage = () => {
                             <div className="flex items-center gap-2">
                               {item.amount && (
                                 <span className="text-sm font-medium">
-                                  ${item.amount.toFixed(2)}
+                                  ₹{item.amount.toFixed(2)}
                                 </span>
                               )}
                               {getStatusBadge(item.status)}

@@ -25,7 +25,7 @@ const EnhancedKPICards = () => {
       changeText: "from last month",
       icon: DollarSign,
       trend: "up",
-      prefix: "$",
+      prefix: "₹",
       decimals: 2,
       color: "text-emerald-600"
     },

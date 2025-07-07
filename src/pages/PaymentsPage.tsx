@@ -187,6 +187,7 @@ const PaymentsPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.totalPayments.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.totalPayments.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Completed transactions</p>
           </CardContent>
         </Card>
@@ -198,6 +199,7 @@ const PaymentsPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.totalFees.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.totalFees.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Transaction fees paid</p>
           </CardContent>
         </Card>
@@ -209,6 +211,7 @@ const PaymentsPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.netRevenue.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.netRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">After processing fees</p>
           </CardContent>
         </Card>
@@ -220,6 +223,7 @@ const PaymentsPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.pendingPayments.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.pendingPayments.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Awaiting processing</p>
           </CardContent>
         </Card>
@@ -287,6 +291,7 @@ const PaymentsPage = () => {
                   <TableCell>{payment.orderNumber}</TableCell>
                   <TableCell>{payment.customerName}</TableCell>
                   <TableCell className="font-medium">${payment.amount.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">₹{payment.amount.toFixed(2)}</TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       {getPaymentMethodIcon(payment.paymentMethod)}
@@ -304,10 +309,10 @@ const PaymentsPage = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {payment.processingFee > 0 ? `$${payment.processingFee.toFixed(2)}` : "-"}
+                    {payment.processingFee > 0 ? `₹${payment.processingFee.toFixed(2)}` : "-"}
                   </TableCell>
                   <TableCell className={`font-medium ${payment.netAmount < 0 ? 'text-destructive' : ''}`}>
-                    ${payment.netAmount.toFixed(2)}
+                    ₹{payment.netAmount.toFixed(2)}
                   </TableCell>
                 </TableRow>
               ))}

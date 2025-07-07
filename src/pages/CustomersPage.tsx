@@ -201,6 +201,7 @@ const CustomersPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">From all customers</p>
           </CardContent>
         </Card>
@@ -212,6 +213,7 @@ const CustomersPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.averageOrderValue.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.averageOrderValue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Per order average</p>
           </CardContent>
         </Card>
@@ -279,6 +281,7 @@ const CustomersPage = () => {
                     <div className="text-sm text-muted-foreground">orders</div>
                   </TableCell>
                   <TableCell className="font-medium">${customer.totalSpent.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">₹{customer.totalSpent.toFixed(2)}</TableCell>
                   <TableCell>{format(customer.lastOrderDate, "MMM dd, yyyy")}</TableCell>
                   <TableCell>{getStatusBadge(customer.status)}</TableCell>
                   <TableCell>

@@ -233,6 +233,7 @@ const ExpensesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.totalExpenses.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.totalExpenses.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">All recorded expenses</p>
           </CardContent>
         </Card>
@@ -244,6 +245,7 @@ const ExpensesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.paidExpenses.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.paidExpenses.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Completed payments</p>
           </CardContent>
         </Card>
@@ -255,6 +257,7 @@ const ExpensesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.pendingExpenses.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.pendingExpenses.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Awaiting payment</p>
           </CardContent>
         </Card>
@@ -266,6 +269,7 @@ const ExpensesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.overdueExpenses.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.overdueExpenses.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Past due payments</p>
           </CardContent>
         </Card>
@@ -335,6 +339,7 @@ const ExpensesPage = () => {
                   </TableCell>
                   <TableCell>{expense.vendor}</TableCell>
                   <TableCell className="font-medium">${expense.amount.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">₹{expense.amount.toFixed(2)}</TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-muted-foreground" />
