@@ -27,8 +27,8 @@ const SettingsPage = () => {
     phone: "+1 (555) 123-4567",
     email: "info@downtownpharmacy.com",
     taxRate: "8.5",
-    currency: "USD",
-    timezone: "America/New_York"
+    currency: "PKR",
+    timezone: "Asia/Karachi"
   });
 
   const handleSaveSettings = (section: string) => {
@@ -131,6 +131,7 @@ const SettingsPage = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="PKR">PKR - Pakistani Rupee</SelectItem>
                       <SelectItem value="USD">USD - US Dollar</SelectItem>
                       <SelectItem value="EUR">EUR - Euro</SelectItem>
                       <SelectItem value="GBP">GBP - British Pound</SelectItem>
@@ -145,6 +146,7 @@ const SettingsPage = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="Asia/Karachi">Pakistan Standard Time</SelectItem>
                       <SelectItem value="America/New_York">Eastern Time</SelectItem>
                       <SelectItem value="America/Chicago">Central Time</SelectItem>
                       <SelectItem value="America/Denver">Mountain Time</SelectItem>
