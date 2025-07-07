@@ -1,6 +1,3 @@
-Here's the fixed version with the missing closing brackets added:
-
-```typescript
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -615,3 +612,350 @@ const EnhancedDashboardHeader = () => {
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem onClick={() => setSortBy(sortBy === "time" ? "priority" : "time")}>
+                            <Clock className="w-4 h-4 mr-2" />
+                            Sort by {sortBy === "time" ? "priority" : "time"}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={clearAllNotifications} className="text-red-600">
+                            <X className="w-4 h-4 mr-2" />
+                            Clear all
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Search Bar */}
+                <div className="p-3 border-b">
+                  <EnhancedInput
+                    variant="glass"
+                    inputSize="sm"
+                    placeholder="Search notifications..."
+                    icon={<Search className="h-4 w-4" />}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Tabs */}
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto p-1 bg-muted/50">
+                    <TabsTrigger value="all" className="text-xs px-2 py-1.5 data-[state=active]:bg-background">
+                      All {getTabCount("all") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("all")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="unread" className="text-xs px-2 py-1.5 data-[state=active]:bg-background">
+                      Unread {getTabCount("unread") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("unread")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="critical" className="text-xs px-2 py-1.5 data-[state=active]:bg-background">
+                      Critical {getTabCount("critical") && <Badge variant="destructive" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("critical")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="orders" className="text-xs px-2 py-1.5 data-[state=active]:bg-background">
+                      Orders {getTabCount("orders") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("orders")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="inventory" className="text-xs px-2 py-1.5 data-[state=active]:bg-background hidden lg:flex">
+                      Inventory {getTabCount("inventory") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("inventory")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="payments" className="text-xs px-2 py-1.5 data-[state=active]:bg-background hidden lg:flex">
+                      Payments {getTabCount("payments") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("payments")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="security" className="text-xs px-2 py-1.5 data-[state=active]:bg-background hidden lg:flex">
+                      Security {getTabCount("security") && <Badge variant="destructive" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("security")}</Badge>}
+                    </TabsTrigger>
+                    <TabsTrigger value="system" className="text-xs px-2 py-1.5 data-[state=active]:bg-background hidden lg:flex">
+                      System {getTabCount("system") && <Badge variant="secondary" className="ml-1 h-4 w-4 p-0 text-[10px]">{getTabCount("system")}</Badge>}
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value={activeTab} className="mt-0">
+                    <ScrollArea className="h-[400px] sm:h-[450px] lg:h-[500px]">
+                      <div className="p-2 space-y-2">
+                        {filterNotifications(activeTab).length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <Bell className="w-12 h-12 text-muted-foreground/50 mb-4" />
+                            <h3 className="text-lg font-semibold text-muted-foreground">No notifications</h3>
+                            <p className="text-sm text-muted-foreground/70">
+                              {searchQuery ? "No notifications match your search" : "You're all caught up!"}
+                            </p>
+                          </div>
+                        ) : (
+                          filterNotifications(activeTab).map((notification) => (
+                            <div
+                              key={notification.id}
+                              className={cn(
+                                "p-3 sm:p-4 rounded-xl border transition-all duration-300 group relative overflow-hidden",
+                                getPriorityStyles(notification.priority, notification.unread),
+                                isAnimating && "animate-pulse"
+                              )}
+                              onClick={() => handleNotificationClick(notification)}
+                            >
+                              {/* Background Gradient */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                              
+                              <div className="relative flex gap-3">
+                                <div className="flex-shrink-0 mt-0.5">
+                                  {getNotificationIcon(notification.type, notification.priority)}
+                                </div>
+                                
+                                <div className="flex-1 min-w-0 space-y-2">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        {getPriorityBadge(notification.priority)}
+                                        {notification.unread && (
+                                          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                        )}
+                                      </div>
+                                      <h4 className={cn(
+                                        "text-sm font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-200",
+                                        notification.unread && "font-bold"
+                                      )}>
+                                        {notification.title}
+                                      </h4>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                        {formatTimeAgo(notification.timestamp)}
+                                      </span>
+                                      <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                          <EnhancedButton
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                            onClick={(e) => e.stopPropagation()}
+                                          >
+                                            <MoreVertical className="w-3 h-3" />
+                                          </EnhancedButton>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                          <DropdownMenuItem onClick={(e) => {
+                                            e.stopPropagation();
+                                            setNotifications(prev => 
+                                              prev.map(n => 
+                                                n.id === notification.id ? { ...n, unread: !n.unread } : n
+                                              )
+                                            );
+                                          }}>
+                                            {notification.unread ? "Mark as read" : "Mark as unread"}
+                                          </DropdownMenuItem>
+                                          <DropdownMenuItem 
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              deleteNotification(notification.id);
+                                            }}
+                                            className="text-red-600"
+                                          >
+                                            Delete
+                                          </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                      </DropdownMenu>
+                                    </div>
+                                  </div>
+                                  
+                                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                                    {notification.message}
+                                  </p>
+                                  
+                                  {/* Tags and Metadata */}
+                                  <div className="flex items-center justify-between gap-2 pt-2">
+                                    <div className="flex items-center gap-2">
+                                      {getCategoryIcon(notification.category)}
+                                      <span className="text-xs text-muted-foreground capitalize">
+                                        {notification.category}
+                                      </span>
+                                      {notification.source && (
+                                        <>
+                                          <span className="text-xs text-muted-foreground">•</span>
+                                          <span className="text-xs text-muted-foreground">
+                                            {notification.source}
+                                          </span>
+                                        </>
+                                      )}
+                                    </div>
+                                    
+                                    {notification.actionable && (
+                                      <EnhancedButton
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-6 text-xs px-2 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleNotificationClick(notification);
+                                        }}
+                                      >
+                                        {notification.actionText || "View"}
+                                      </EnhancedButton>
+                                    )}
+                                  </div>
+                                  
+                                  {/* Tags */}
+                                  {notification.tags && notification.tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 pt-1">
+                                      {notification.tags.slice(0, 3).map((tag, index) => (
+                                        <Badge
+                                          key={index}
+                                          variant="outline"
+                                          className="text-[10px] px-1.5 py-0.5 h-auto"
+                                        >
+                                          {tag}
+                                        </Badge>
+                                      ))}
+                                      {notification.tags.length > 3 && (
+                                        <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 h-auto">
+                                          +{notification.tags.length - 3}
+                                        </Badge>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          {/* Theme Toggle */}
+          <EnhancedButton 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleTheme}
+            className="h-8 w-8 sm:h-9 sm:w-9 hover:scale-110 transition-all duration-300"
+          >
+            <Sun className="h-3.5 w-3.5 sm:h-4 sm:w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-3.5 w-3.5 sm:h-4 sm:w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+          </EnhancedButton>
+
+          {/* Settings */}
+          <EnhancedButton 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleSettingsClick}
+            className="h-8 w-8 sm:h-9 sm:w-9 hover:scale-110 transition-all duration-300"
+          >
+            <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          </EnhancedButton>
+
+          {/* User Avatar */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <EnhancedButton 
+                variant="ghost" 
+                className="relative h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:scale-110 transition-all duration-300"
+              >
+                <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
+                  <AvatarImage src={userProfileImage} alt={userName} />
+                  <AvatarFallback className="text-xs sm:text-sm">
+                    {userName.split(' ').map(n => n[0]).join('').toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </EnhancedButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{userName}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{userEmail}</p>
+                  <Badge variant="outline" className="w-fit text-xs mt-1">
+                    {userRole}
+                  </Badge>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/dashboard/settings")}>
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate("/login")}>
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+
+      {/* Notification Detail Modal */}
+      <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {selectedNotification && getNotificationIcon(selectedNotification.type, selectedNotification.priority)}
+              {selectedNotification?.title}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedNotification?.source} • {selectedNotification && formatTimeAgo(selectedNotification.timestamp)}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {selectedNotification?.message}
+            </p>
+            {selectedNotification?.metadata && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">Details</h4>
+                <div className="text-xs space-y-1 text-muted-foreground">
+                  {selectedNotification.metadata.amount && (
+                    <p>Amount: ${selectedNotification.metadata.amount.toLocaleString()}</p>
+                  )}
+                  {selectedNotification.metadata.orderId && (
+                    <p>Order ID: {selectedNotification.metadata.orderId}</p>
+                  )}
+                  {selectedNotification.metadata.customerId && (
+                    <p>Customer ID: {selectedNotification.metadata.customerId}</p>
+                  )}
+                  {selectedNotification.metadata.productName && (
+                    <p>Product: {selectedNotification.metadata.productName}</p>
+                  )}
+                  {selectedNotification.metadata.count && (
+                    <p>Count: {selectedNotification.metadata.count}</p>
+                  )}
+                </div>
+              </div>
+            )}
+            {selectedNotification?.tags && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">Tags</h4>
+                <div className="flex flex-wrap gap-1">
+                  {selectedNotification.tags.map((tag, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDetailModal(false)}>
+              Close
+            </Button>
+            {selectedNotification?.actionUrl && (
+              <Button onClick={() => {
+                if (selectedNotification.actionUrl) {
+                  navigate(selectedNotification.actionUrl);
+                  setShowDetailModal(false);
+                  setNotificationsOpen(false);
+                }
+              }}>
+                {selectedNotification.actionText || "Take Action"}
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
+
+export default EnhancedDashboardHeader;
