@@ -12,6 +12,14 @@ import DashboardOverview from "./pages/DashboardOverview";
 import ProductsPage from "./pages/ProductsPage";
 import POSPage from "./pages/POSPage";
 import OrdersPage from "./pages/OrdersPage";
+import SuppliersPage from "./pages/SuppliersPage";
+import ReturnsPage from "./pages/ReturnsPage";
+import ExpensesPage from "./pages/ExpensesPage";
+import ReportsPage from "./pages/ReportsPage";
+import PaymentsPage from "./pages/PaymentsPage";
+import CustomersPage from "./pages/CustomersPage";
+import UserManagementPage from "./pages/UserManagementPage";
+import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +40,14 @@ const App = () => (
               <Route path="products" element={<ProductsPage />} />
               <Route path="pos" element={<POSPage />} />
               <Route path="orders" element={<OrdersPage />} />
+              <Route path="suppliers" element={<SuppliersPage />} />
+              <Route path="returns" element={<ReturnsPage />} />
+              <Route path="expenses" element={<ExpensesPage />} />
+              <Route path="reports" element={<ReportsPage />} />
+              <Route path="payments" element={<PaymentsPage />} />
+              <Route path="customers" element={<CustomersPage />} />
+              <Route path="user-management" element={<UserManagementPage />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
