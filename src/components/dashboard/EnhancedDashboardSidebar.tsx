@@ -88,7 +88,7 @@ const EnhancedDashboardSidebar = () => {
             />
           </div>
           <div>
-            <h2 className="font-semibold text-lg">WKGH</h2>
+            <h2 className="font-bold text-lg">WKGH</h2>
             <p className="text-xs text-muted-foreground">Hospital Management</p>
           </div>
         </div>
