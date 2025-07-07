@@ -3,11 +3,13 @@ import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Moon, Sun, Bell, Search, Settings } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useNavigate } from "react-router-dom";
 import { EnhancedInput } from "@/components/ui/enhanced-input";
 import { Badge } from "@/components/ui/badge";
 
 const EnhancedDashboardHeader = () => {
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userRole = localStorage.getItem("userRole") || "admin";
   const userName = localStorage.getItem("userName") || "User";
@@ -16,6 +18,9 @@ const EnhancedDashboardHeader = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  const handleSettingsClick = () => {
+    navigate("/dashboard/settings");
+  };
   return (
     <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background/80 backdrop-blur-md px-6 transition-all duration-300">
       <div className="flex items-center gap-4">
@@ -54,7 +59,7 @@ const EnhancedDashboardHeader = () => {
         </EnhancedButton>
 
         {/* Settings */}
-        <EnhancedButton variant="ghost" size="icon">
+        <EnhancedButton variant="ghost" size="icon" onClick={handleSettingsClick}>
           <Settings className="h-4 w-4" />
         </EnhancedButton>
         
