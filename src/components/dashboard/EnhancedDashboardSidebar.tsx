@@ -80,12 +80,16 @@ const EnhancedDashboardSidebar = () => {
     <Sidebar className="border-r border-border/50">
       <SidebarHeader className="p-6 border-b border-border/50">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-lg">
-            <Crown className="h-5 w-5 text-primary-foreground" />
+          <div className="h-10 w-10 rounded-full overflow-hidden shadow-lg border-2 border-white">
+            <img 
+              src="/Artboard 1.png" 
+              alt="Wahab Kidney & General Hospital" 
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
-            <h2 className="font-semibold text-lg">POS Pro</h2>
-            <p className="text-xs text-muted-foreground">Professional Edition</p>
+            <h2 className="font-semibold text-lg">WKGH</h2>
+            <p className="text-xs text-muted-foreground">Hospital Management</p>
           </div>
         </div>
       </SidebarHeader>
