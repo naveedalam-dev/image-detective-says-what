@@ -32,6 +32,7 @@ const Signup = () => {
     if (Object.values(formData).every(field => field)) {
       localStorage.setItem("userRole", formData.role);
       localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userName", formData.name);
       navigate("/dashboard");
     }
   };

@@ -8,6 +8,7 @@ const DashboardHeader = () => {
   const { theme, setTheme } = useTheme();
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userRole = localStorage.getItem("userRole") || "admin";
+  const userName = localStorage.getItem("userName") || "User";
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -31,13 +32,13 @@ const DashboardHeader = () => {
         
         <div className="flex items-center gap-3">
           <div className="text-right text-sm">
-            <p className="font-medium capitalize">{userRole}</p>
-            <p className="text-muted-foreground">{userEmail}</p>
+            <p className="font-medium">{userName}</p>
+            <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
           </div>
           <Avatar>
             <AvatarImage src="" />
             <AvatarFallback>
-              {userEmail.charAt(0).toUpperCase()}
+              {userName.split(" ").map(n => n[0]).join("").toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </div>

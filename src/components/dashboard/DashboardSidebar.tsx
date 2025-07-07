@@ -61,6 +61,7 @@ const menuItems = [
 
 const DashboardSidebar = () => {
   const userRole = localStorage.getItem("userRole") || "admin";
+  const userName = localStorage.getItem("userName") || "User";
 
   return (
     <Sidebar>
@@ -98,10 +99,8 @@ const DashboardSidebar = () => {
           <SidebarGroupLabel>User Profile</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="px-3 py-2 text-sm">
-              <p className="font-medium capitalize">{userRole} User</p>
-              <p className="text-muted-foreground text-xs">
-                {localStorage.getItem("userEmail")}
-              </p>
+              <p className="font-medium">{userName}</p>
+              <p className="text-muted-foreground text-xs capitalize">{userRole}</p>
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
