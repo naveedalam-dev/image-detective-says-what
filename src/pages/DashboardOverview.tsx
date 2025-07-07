@@ -1,21 +1,32 @@
-import KPICards from "@/components/dashboard/KPICards";
+import EnhancedKPICards from "@/components/dashboard/EnhancedKPICards";
 import OverviewChart from "@/components/dashboard/OverviewChart";
 import RecentSales from "@/components/dashboard/RecentSales";
 
 const DashboardOverview = () => {
   return (
-    <main className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+    <div className="container-fluid py-8 space-y-8 animate-fade-in">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <h2 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
+            Dashboard Overview
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Welcome back! Here's what's happening with your business today.
+          </p>
+        </div>
       </div>
-      <div className="space-y-4">
-        <KPICards />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      
+      <EnhancedKPICards />
+      
+      <div className="grid gap-8 lg:grid-cols-7">
+        <div className="lg:col-span-4 animate-slide-up stagger-3">
           <OverviewChart />
+        </div>
+        <div className="lg:col-span-3 animate-slide-up stagger-4">
           <RecentSales />
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

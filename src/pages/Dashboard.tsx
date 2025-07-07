@@ -1,16 +1,18 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
+import EnhancedDashboardHeader from "@/components/dashboard/EnhancedDashboardHeader";
+import EnhancedDashboardSidebar from "@/components/dashboard/EnhancedDashboardSidebar";
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full">
-        <DashboardSidebar />
-        <div className="flex-1">
-          <DashboardHeader />
-          <Outlet />
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex min-h-screen w-full bg-gradient-to-br from-background via-background to-muted/20">
+        <EnhancedDashboardSidebar />
+        <div className="flex-1 flex flex-col">
+          <EnhancedDashboardHeader />
+          <main className="flex-1 overflow-auto">
+            <Outlet />
+          </main>
         </div>
       </div>
     </SidebarProvider>
