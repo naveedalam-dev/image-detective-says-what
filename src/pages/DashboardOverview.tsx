@@ -7,9 +7,6 @@ const DashboardOverview = () => {
     <div className="container-fluid py-8 space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="space-y-2">
-          <h2 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
-            Dashboard Overview
-          </h2>
           <p className="text-muted-foreground text-lg">
             Welcome back! Here's what's happening with your business today.
           </p>
