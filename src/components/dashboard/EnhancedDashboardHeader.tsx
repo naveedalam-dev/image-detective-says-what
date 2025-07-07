@@ -20,9 +20,6 @@ const EnhancedDashboardHeader = () => {
     <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background/80 backdrop-blur-md px-6 transition-all duration-300">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
-        <h1 className="text-xl font-semibold bg-gradient-primary bg-clip-text text-transparent">
-          Hospital Management System
-        </h1>
       </div>
 
       <div className="flex items-center gap-4">
