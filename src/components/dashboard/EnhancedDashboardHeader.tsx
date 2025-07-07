@@ -60,6 +60,7 @@ const EnhancedDashboardHeader = () => {
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userRole = localStorage.getItem("userRole") || "admin";
   const userName = localStorage.getItem("userName") || "User";
+  const userProfileImage = localStorage.getItem("userProfileImage") || "";
 
   // Responsive detection
   useEffect(() => {
@@ -913,8 +914,148 @@ const EnhancedDashboardHeader = () => {
               <p className="font-medium truncate max-w-[80px] lg:max-w-[120px]">{userName}</p>
               <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
             </div>
-            <Avatar className="h-7 w-7 sm:h-8 sm:w-8 lg:h-9 lg:w-9 ring-2 ring-primary/20 transition-all duration-300 hover:ring-primary/40 hover:scale-110">
-              <AvatarImage src="" />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="h-7 w-7 sm:h-8 sm:w-8 lg:h-9 lg:w-9 ring-2 ring-primary/20 transition-all duration-300 hover:ring-primary/40 hover:scale-110 cursor-pointer">
+                  <AvatarImage src={userProfileImage} />
+                  <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold text-xs sm:text-sm">
+                    {userName.split(" ").map(n => n[0]).join("").toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={userProfileImage} />
+                      <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold text-xs">
+                        {userName.split(" ").map(n => n[0]).join("").toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{userName}</p>
+                      <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
+                  <User className="w-4 h-4 mr-2" />
+                  Profile Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/dashboard/settings")}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Account Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/");
+                  }}
+                  className="text-destructive"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </header>
+
+      {/* Notification Detail Modal */}
+      <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {selectedNotification && getNotificationIcon(selectedNotification.type, selectedNotification.priority)}
+              Notification Details
+            </DialogTitle>
+            <DialogDescription>
+              Complete information about this notification
+            </DialogDescription>
+          </DialogHeader>
+          {selectedNotification && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold">{selectedNotification.title}</h3>
+                  {getPriorityBadge(selectedNotification.priority)}
+                </div>
+                <p className="text-muted-foreground">{selectedNotification.message}</p>
+              </div>
+              
+              {selectedNotification.metadata && (
+                <div className="space-y-2">
+                  <h4 className="font-medium">Additional Information</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {selectedNotification.metadata.amount && (
+                      <div>
+                        <span className="text-muted-foreground">Amount:</span>
+                        <span className="ml-2 font-medium">${selectedNotification.metadata.amount.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {selectedNotification.metadata.orderId && (
+                      <div>
+                        <span className="text-muted-foreground">Order ID:</span>
+                        <span className="ml-2 font-medium">{selectedNotification.metadata.orderId}</span>
+                      </div>
+                    )}
+                    {selectedNotification.metadata.customerId && (
+                      <div>
+                        <span className="text-muted-foreground">Customer ID:</span>
+                        <span className="ml-2 font-medium">{selectedNotification.metadata.customerId}</span>
+                      </div>
+                    )}
+                    {selectedNotification.metadata.productName && (
+                      <div>
+                        <span className="text-muted-foreground">Product:</span>
+                        <span className="ml-2 font-medium">{selectedNotification.metadata.productName}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {selectedNotification.tags && selectedNotification.tags.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-medium">Tags</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedNotification.tags.map((tag, index) => (
+                      <Badge key={index} variant="outline">{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Received: {formatTimeAgo(selectedNotification.timestamp)}</span>
+                {selectedNotification.source && <span>Source: {selectedNotification.source}</span>}
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDetailModal(false)}>
+              Close
+            </Button>
+            {selectedNotification?.actionUrl && (
+              <Button onClick={() => {
+                navigate(selectedNotification.actionUrl!);
+                setShowDetailModal(false);
+                setNotificationsOpen(false);
+              }}>
+                {selectedNotification.actionText || "Take Action"}
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
+
+export default EnhancedDashboardHeader;
               <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold text-xs sm:text-sm">
                 {userName.split(" ").map(n => n[0]).join("").toUpperCase()}
               </AvatarFallback>
