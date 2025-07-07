@@ -38,6 +38,13 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* POS System specific colors */
+    --chart-blue: 217 91% 60%;
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 222.2 84% 4.9%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -53,6 +60,13 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* POS System specific colors - light mode */
+    --chart-blue: 217 91% 60%;
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 222.2 84% 4.9%;
   }
 
   .dark {
@@ -91,6 +105,13 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* POS System specific colors - dark mode */
+    --chart-blue: 217 91% 60%;
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 222.2 84% 4.9%;
   }
 }
 
