@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { EnhancedCard, EnhancedCardContent, EnhancedCardDescription, EnhancedCardHeader, EnhancedCardTitle } from "@/components/ui/enhanced-card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { Mail, Lock, UserCheck, ArrowRight, Shield } from "lucide-react";
+import { Mail, Lock, UserCheck, ArrowRight } from "lucide-react";
 
 const Login = () => {
   const [role, setRole] = useState("");
@@ -34,12 +34,16 @@ const Login = () => {
       <div className="w-full max-w-md animate-scale-in">
         <EnhancedCard variant="premium" size="lg">
           <EnhancedCardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg">
-              <Shield className="h-8 w-8 text-primary-foreground" />
+            <div className="mx-auto w-20 h-20 rounded-full overflow-hidden shadow-lg border-4 border-white">
+              <img 
+                src="/Artboard 1.png" 
+                alt="Wahab Kidney & General Hospital" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <EnhancedCardTitle className="text-3xl">Welcome Back</EnhancedCardTitle>
             <EnhancedCardDescription className="text-base">
-              Sign in to access your POS dashboard
+              Sign in to access Wahab Kidney & General Hospital system
             </EnhancedCardDescription>
           </EnhancedCardHeader>
           <EnhancedCardContent>
