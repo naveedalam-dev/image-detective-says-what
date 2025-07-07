@@ -188,7 +188,7 @@ const POSPage = () => {
                     <h3 className="font-medium text-sm leading-tight">{product.name}</h3>
                     <p className="text-xs text-muted-foreground">{product.category}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold">${product.price}</span>
+                      <span className="text-lg font-bold">₹{product.price}</span>
                       <Badge variant="secondary" className="text-xs">
                         {product.stock} left
                       </Badge>
@@ -247,7 +247,7 @@ const POSPage = () => {
                       <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                          <p className="text-xs text-muted-foreground">${item.price} each</p>
+                          <p className="text-xs text-muted-foreground">₹{item.price} each</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button
@@ -269,7 +269,7 @@ const POSPage = () => {
                           </Button>
                         </div>
                         <div className="text-right ml-3">
-                          <p className="font-medium text-sm">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="font-medium text-sm">₹{(item.price * item.quantity).toFixed(2)}</p>
                         </div>
                       </div>
                     ))}
@@ -288,16 +288,16 @@ const POSPage = () => {
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>${calculateSubtotal().toFixed(2)}</span>
+                  <span>₹{calculateSubtotal().toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax (8%):</span>
-                  <span>${calculateTax(calculateSubtotal()).toFixed(2)}</span>
+                  <span>₹{calculateTax(calculateSubtotal()).toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total:</span>
-                  <span>${calculateTotal().toFixed(2)}</span>
+                  <span>₹{calculateTotal().toFixed(2)}</span>
                 </div>
                 <div className="space-y-2 pt-4">
                   <Button className="w-full" onClick={handleCheckout}>

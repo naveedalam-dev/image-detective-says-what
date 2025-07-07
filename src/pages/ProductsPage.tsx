@@ -139,7 +139,7 @@ const ProductsPage = () => {
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>{product.category}</TableCell>
-                  <TableCell>${product.price}</TableCell>
+                  <TableCell>₹{product.price}</TableCell>
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>{getStatusBadge(product.status)}</TableCell>
                   <TableCell className="text-right">
