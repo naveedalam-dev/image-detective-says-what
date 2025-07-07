@@ -25,7 +25,8 @@ import {
   Settings,
   LogOut,
   Crown,
-  BarChart3
+  BarChart3,
+  History
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { EnhancedButton } from "@/components/ui/enhanced-button";
@@ -40,6 +41,7 @@ const menuItems = [
       { title: "Products", url: "/dashboard/products", icon: Package2, badge: "156" },
       { title: "POS/Cart", url: "/dashboard/pos", icon: ShoppingCart, badge: null },
       { title: "Orders", url: "/dashboard/orders", icon: ShoppingBag, badge: "12" },
+      { title: "History", url: "/dashboard/history", icon: History, badge: null },
     ]
   },
   {
