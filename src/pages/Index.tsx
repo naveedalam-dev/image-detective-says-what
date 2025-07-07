@@ -1,6 +1,7 @@
 import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Zap, Shield, TrendingUp, Users, BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const navigate = useNavigate();
