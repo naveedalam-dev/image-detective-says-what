@@ -294,7 +294,7 @@ const OrdersPage = () => {
                   </TableCell>
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
                   <TableCell>{order.paymentMethod}</TableCell>
-                  <TableCell className="font-medium">₹{order.total.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">Rs {order.total.toFixed(2)}</TableCell>
                   <TableCell className="text-right">
                     <Dialog>
                       <DialogTrigger asChild>
@@ -352,8 +352,8 @@ const OrdersPage = () => {
                                     <TableRow key={item.id}>
                                       <TableCell>{item.name}</TableCell>
                                       <TableCell>{item.quantity}</TableCell>
-                                      <TableCell>₹{item.price.toFixed(2)}</TableCell>
-                                      <TableCell>₹{item.total.toFixed(2)}</TableCell>
+                                      <TableCell>Rs {item.price.toFixed(2)}</TableCell>
+                                      <TableCell>Rs {item.total.toFixed(2)}</TableCell>
                                     </TableRow>
                                   ))}
                                 </TableBody>
@@ -365,15 +365,15 @@ const OrdersPage = () => {
                               <div className="space-y-2">
                                 <div className="flex justify-between">
                                   <span>Subtotal:</span>
-                                  <span>₹{selectedOrder.subtotal.toFixed(2)}</span>
+                                  <span>Rs {selectedOrder.subtotal.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                   <span>Tax:</span>
-                                  <span>₹{selectedOrder.tax.toFixed(2)}</span>
+                                  <span>Rs {selectedOrder.tax.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-lg border-t pt-2">
                                   <span>Total:</span>
-                                  <span>₹{selectedOrder.total.toFixed(2)}</span>
+                                  <span>Rs {selectedOrder.total.toFixed(2)}</span>
                                 </div>
                               </div>
                             </div>

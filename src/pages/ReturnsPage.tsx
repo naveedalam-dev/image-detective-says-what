@@ -232,7 +232,7 @@ const ReturnsPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${stats.totalRefunds.toFixed(2)}</div>
-            <div className="text-2xl font-bold">₹{stats.totalRefunds.toFixed(2)}</div>
+            <div className="text-2xl font-bold">Rs {stats.totalRefunds.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">Processed refunds</p>
           </CardContent>
         </Card>
@@ -303,7 +303,7 @@ const ReturnsPage = () => {
                     </div>
                   </TableCell>
                   <TableCell className="font-medium">
-                    {returnItem.refundAmount > 0 ? `₹${returnItem.refundAmount.toFixed(2)}` : "-"}
+                    {returnItem.refundAmount > 0 ? `Rs ${returnItem.refundAmount.toFixed(2)}` : "-"}
                   </TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm">Review</Button>

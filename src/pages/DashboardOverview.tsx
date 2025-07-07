@@ -8,7 +8,7 @@ const DashboardOverview = () => {
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <p className="text-muted-foreground text-lg">
-            Welcome back! Here's what's happening with your business today.
+            Welcome back! Here's what's happening with your hospital today.
           </p>
         </div>
       </div>
