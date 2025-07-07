@@ -24,12 +24,7 @@ import {
   UserCog,
   Settings,
   LogOut,
-  Crown,
-  History,
-  Clock,
-  Eye,
-  Edit,
-  Plus
+  Crown
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { EnhancedButton } from "@/components/ui/enhanced-button";
@@ -71,41 +66,6 @@ const menuItems = [
   }
 ];
 
-// Recent activity history
-const recentHistory = [
-  {
-    id: 1,
-    action: "Viewed Order",
-    item: "ORD-2024-001",
-    time: "2 min ago",
-    icon: Eye,
-    url: "/dashboard/orders"
-  },
-  {
-    id: 2,
-    action: "Added Product",
-    item: "Aspirin 100mg",
-    time: "5 min ago",
-    icon: Plus,
-    url: "/dashboard/products"
-  },
-  {
-    id: 3,
-    action: "Updated Customer",
-    item: "John Smith",
-    time: "12 min ago",
-    icon: Edit,
-    url: "/dashboard/customers"
-  },
-  {
-    id: 4,
-    action: "Processed Payment",
-    item: "$125.50",
-    time: "18 min ago",
-    icon: DollarSign,
-    url: "/dashboard/payments"
-  }
-];
 const EnhancedDashboardSidebar = () => {
   const userRole = localStorage.getItem("userRole") || "admin";
   const userName = localStorage.getItem("userName") || "User";
@@ -191,55 +151,6 @@ const EnhancedDashboardSidebar = () => {
           </SidebarGroup>
         ))}
       </SidebarContent>
-        {/* Recent History Section */}
-        <SidebarGroup className="mb-6">
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
-            <History className="h-3 w-3" />
-            Recent Activity
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <div className="space-y-2">
-              {recentHistory.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => navigate(item.url)}
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-accent/30 cursor-pointer transition-all duration-200 group"
-                >
-                  <div className="flex-shrink-0">
-                    <div className="w-6 h-6 rounded-md bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                      <item.icon className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-foreground truncate">
-                      {item.action}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {item.item}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="h-2.5 w-2.5" />
-                      <span className="text-[10px]">{item.time}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 pt-2 border-t border-border/30">
-              <EnhancedButton
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start text-xs text-muted-foreground hover:text-primary"
-                onClick={() => navigate("/dashboard/reports")}
-              >
-                <History className="h-3 w-3 mr-2" />
-                View All Activity
-              </EnhancedButton>
-            </div>
-          </SidebarGroupContent>
-        </SidebarGroup>
         
       <SidebarFooter className="p-4 border-t border-border/50">
         <div className="space-y-3">
