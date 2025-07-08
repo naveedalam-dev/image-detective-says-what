@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Moon, Sun, Bell, Search, Settings, X, Check, AlertTriangle, Info, CheckCircle, Clock, Filter, MoreVertical, Zap, TrendingUp, Package, DollarSign, Users, Shield, Activity, ChevronDown, Star, Flame, AlertCircle } from "lucide-react";
+import { Moon, Sun, Bell, Search, Settings, X, Check, AlertTriangle, Info, CheckCircle, Clock, Filter, MoreVertical, Zap, TrendingUp, Package, DollarSign, Users, Shield, Activity, ChevronDown, Star, Flame, AlertCircle, ShoppingBag } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -41,6 +41,16 @@ interface Notification {
   source?: string;
 }
 
+interface SearchResult {
+  id: string;
+  title: string;
+  description: string;
+  type: "product" | "customer" | "order" | "page" | "setting";
+  url?: string;
+  icon?: React.ReactNode;
+  metadata?: Record<string, any>;
+}
+
 const EnhancedDashboardHeader = () => {
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -57,6 +67,13 @@ const EnhancedDashboardHeader = () => {
   const bellRef = useRef<HTMLButtonElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Search functionality state
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [globalSearchQuery, setGlobalSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userRole = localStorage.getItem("userRole") || "admin";
   const userName = localStorage.getItem("userName") || "User";
@@ -72,6 +89,131 @@ const EnhancedDashboardHeader = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Mock search data
+  const mockSearchData: SearchResult[] = [
+    {
+      id: "1",
+      title: "Aspirin 100mg",
+      description: "Pain relief medication - Rs 12.99",
+      type: "product",
+      url: "/dashboard/products",
+      icon: <Package className="w-4 h-4" />,
+      metadata: { price: 12.99, stock: 150 }
+    },
+    {
+      id: "2",
+      title: "John Smith",
+      description: "Customer - john.smith@email.com",
+      type: "customer",
+      url: "/dashboard/customers",
+      icon: <Users className="w-4 h-4" />,
+      metadata: { email: "john.smith@email.com", orders: 12 }
+    },
+    {
+      id: "3",
+      title: "Order #ORD-2024-001",
+      description: "Completed order - Rs 55.05",
+      type: "order",
+      url: "/dashboard/orders",
+      icon: <ShoppingBag className="w-4 h-4" />,
+      metadata: { amount: 55.05, status: "completed" }
+    },
+    {
+      id: "4",
+      title: "Products Management",
+      description: "Manage your product inventory",
+      type: "page",
+      url: "/dashboard/products",
+      icon: <Package className="w-4 h-4" />
+    },
+    {
+      id: "5",
+      title: "Customer Management",
+      description: "View and manage customers",
+      type: "page",
+      url: "/dashboard/customers",
+      icon: <Users className="w-4 h-4" />
+    },
+    {
+      id: "6",
+      title: "Store Settings",
+      description: "Configure store information",
+      type: "setting",
+      url: "/dashboard/settings",
+      icon: <Settings className="w-4 h-4" />
+    }
+  ];
+
+  // Search functionality
+  const performSearch = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    const filtered = mockSearchData.filter(item =>
+      item.title.toLowerCase().includes(query.toLowerCase()) ||
+      item.description.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setSearchResults(filtered);
+    setSearchLoading(false);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (value: string) => {
+    setGlobalSearchQuery(value);
+    performSearch(value);
+  };
+
+  // Handle search result click
+  const handleSearchResultClick = (result: SearchResult) => {
+    if (result.url) {
+      navigate(result.url);
+      setSearchOpen(false);
+      setGlobalSearchQuery("");
+      setSearchResults([]);
+    }
+  };
+
+  // Handle mobile search button click
+  const handleMobileSearchClick = () => {
+    setSearchOpen(true);
+    // Focus the search input after a brief delay to ensure the dialog is open
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+  };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl/Cmd + K to open search
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault();
+        setSearchOpen(true);
+        setTimeout(() => {
+          searchInputRef.current?.focus();
+        }, 100);
+      }
+      
+      // Escape to close search
+      if (event.key === 'Escape' && searchOpen) {
+        setSearchOpen(false);
+        setGlobalSearchQuery("");
+        setSearchResults([]);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [searchOpen]);
 
   // Initialize ultra-realistic notifications
   useEffect(() => {
@@ -467,9 +609,12 @@ const EnhancedDashboardHeader = () => {
             <EnhancedInput
               variant="glass"
               inputSize="sm"
-              placeholder="Search anything..."
+              placeholder="Search anything... (Ctrl+K)"
               icon={<Search className="h-4 w-4" />}
               className="w-40 xl:w-56 2xl:w-64 transition-all duration-300"
+              value={globalSearchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              onFocus={() => setSearchOpen(true)}
             />
           </div>
 
@@ -479,6 +624,7 @@ const EnhancedDashboardHeader = () => {
               variant="ghost" 
               size="icon" 
               className="h-8 w-8 sm:h-9 sm:w-9 hover:scale-110 transition-all duration-300"
+              onClick={handleMobileSearchClick}
             >
               <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </EnhancedButton>
@@ -884,6 +1030,114 @@ const EnhancedDashboardHeader = () => {
           </DropdownMenu>
         </div>
       </header>
+
+      {/* Global Search Modal */}
+      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] p-0">
+          <div className="flex flex-col">
+            {/* Search Header */}
+            <div className="flex items-center gap-3 p-4 border-b">
+              <Search className="w-5 h-5 text-muted-foreground" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search products, customers, orders, pages..."
+                className="flex-1 bg-transparent border-none outline-none text-lg placeholder:text-muted-foreground"
+                value={globalSearchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                autoFocus
+              />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <kbd className="px-2 py-1 bg-muted rounded text-xs">Esc</kbd>
+                <span>to close</span>
+              </div>
+            </div>
+
+            {/* Search Results */}
+            <ScrollArea className="max-h-[400px]">
+              <div className="p-2">
+                {searchLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                  </div>
+                ) : globalSearchQuery && searchResults.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <Search className="w-12 h-12 text-muted-foreground/50 mb-4" />
+                    <h3 className="text-lg font-semibold text-muted-foreground">No results found</h3>
+                    <p className="text-sm text-muted-foreground/70">
+                      Try searching for products, customers, or orders
+                    </p>
+                  </div>
+                ) : searchResults.length > 0 ? (
+                  <div className="space-y-1">
+                    {searchResults.map((result) => (
+                      <div
+                        key={result.id}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent cursor-pointer transition-colors"
+                        onClick={() => handleSearchResultClick(result)}
+                      >
+                        <div className="flex-shrink-0">
+                          {result.icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-sm truncate">{result.title}</h4>
+                          <p className="text-xs text-muted-foreground truncate">{result.description}</p>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <Badge variant="outline" className="text-xs capitalize">
+                            {result.type}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-8 text-center">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2">Quick Actions</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            className="flex items-center gap-2 p-3 rounded-lg hover:bg-accent text-left transition-colors"
+                            onClick={() => handleSearchResultClick({ id: "quick-products", title: "Products", description: "", type: "page", url: "/dashboard/products" })}
+                          >
+                            <Package className="w-4 h-4" />
+                            <span className="text-sm">Products</span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 p-3 rounded-lg hover:bg-accent text-left transition-colors"
+                            onClick={() => handleSearchResultClick({ id: "quick-customers", title: "Customers", description: "", type: "page", url: "/dashboard/customers" })}
+                          >
+                            <Users className="w-4 h-4" />
+                            <span className="text-sm">Customers</span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 p-3 rounded-lg hover:bg-accent text-left transition-colors"
+                            onClick={() => handleSearchResultClick({ id: "quick-orders", title: "Orders", description: "", type: "page", url: "/dashboard/orders" })}
+                          >
+                            <ShoppingBag className="w-4 h-4" />
+                            <span className="text-sm">Orders</span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 p-3 rounded-lg hover:bg-accent text-left transition-colors"
+                            onClick={() => handleSearchResultClick({ id: "quick-settings", title: "Settings", description: "", type: "page", url: "/dashboard/settings" })}
+                          >
+                            <Settings className="w-4 h-4" />
+                            <span className="text-sm">Settings</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        <p>💡 Tip: Use <kbd className="px-1 py-0.5 bg-muted rounded text-xs">Ctrl+K</kbd> to quickly open search</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Notification Detail Modal */}
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
