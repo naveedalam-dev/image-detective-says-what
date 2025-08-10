@@ -77,55 +77,70 @@ const EnhancedDashboardSidebar = () => {
   };
 
   return (
-    <Sidebar className="border-r border-border/50">
-      <SidebarHeader className="p-6 border-b border-border/50">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full overflow-hidden shadow-lg border-2 border-white">
-            <img 
-              src="/Artboard 1.png" 
-              alt="Wahab Kidney & General Hospital" 
-              className="w-full h-full object-cover"
-            />
+    <Sidebar className="glass border-r border-border-soft/70 backdrop-blur-3xl">
+      <SidebarHeader className="p-8 border-b border-border-soft/50">
+        <div className="flex items-center gap-4 group">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 rounded-3xl blur-lg transition-opacity duration-500"></div>
+            <div className="h-14 w-14 rounded-3xl overflow-hidden shadow-glow border-2 border-primary/30 relative z-10 transition-all duration-300 group-hover:scale-110">
+              <img 
+                src="/Artboard 1.png" 
+                alt="Wahab Kidney & General Hospital" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
-          <div>
-            <h2 className="font-bold text-lg">WKGH</h2>
-            <p className="text-xs text-muted-foreground">Hospital Management</p>
+          <div className="space-y-1">
+            <h2 className="font-black text-2xl font-display bg-gradient-primary bg-clip-text text-transparent">WKGH</h2>
+            <p className="text-sm text-muted-foreground font-semibold">Hospital Management</p>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-3 py-4">
-        {menuItems.map((section) => (
-          <SidebarGroup key={section.title} className="mb-6">
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+      <SidebarContent className="px-6 py-8 space-y-8">
+        {menuItems.map((section, sectionIndex) => (
+          <SidebarGroup key={section.title} className="space-y-4">
+            <SidebarGroupLabel className="text-xs font-black text-muted-foreground uppercase tracking-widest mb-4 font-display">
               {section.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
-                {section.items.map((item) => (
+              <SidebarMenu className="space-y-2">
+                {section.items.map((item, itemIndex) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="group">
+                    <SidebarMenuButton asChild className="group p-0">
                       <NavLink
                         to={item.url}
                         className={({ isActive }) =>
                           cn(
-                            "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-accent/50 relative overflow-hidden",
-                            isActive && "bg-primary/10 text-primary shadow-lg shadow-primary/20"
+                            "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-500 relative overflow-hidden",
+                            "hover:bg-primary/5 hover:shadow-soft hover:scale-105",
+                            "animate-slide-up opacity-0",
+                            `stagger-${sectionIndex * 4 + itemIndex + 1}`,
+                            isActive && "bg-gradient-to-r from-primary/15 to-primary/5 text-primary shadow-glow border border-primary/20"
                           )
                         }
                       >
                         {({ isActive }) => (
                           <>
                             {isActive && (
-                              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-xl" />
+                              <>
+                                <div className="absolute inset-0 bg-gradient-primary opacity-10 rounded-2xl" />
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-primary rounded-r-full" />
+                              </>
                             )}
-                            <item.icon className={cn(
-                              "h-5 w-5 transition-all duration-300 group-hover:scale-110",
-                              isActive ? "text-primary" : "text-muted-foreground"
-                            )} />
+                            <div className={cn(
+                              "p-3 rounded-xl transition-all duration-500 group-hover:scale-110",
+                              "bg-gradient-to-br from-background to-muted-soft border border-border-soft",
+                              isActive ? "bg-gradient-primary text-primary-foreground shadow-glow" : "group-hover:bg-primary/10"
+                            )}>
+                              <item.icon className={cn(
+                                "h-5 w-5 transition-all duration-500",
+                                isActive ? "text-white" : "text-muted-foreground group-hover:text-primary"
+                              )} />
+                            </div>
                             <span className={cn(
-                              "font-medium transition-colors duration-300",
-                              isActive ? "text-primary" : "text-foreground"
+                              "font-semibold font-display transition-all duration-300 text-base",
+                              isActive ? "text-primary" : "text-foreground group-hover:text-primary"
                             )}>
                               {item.title}
                             </span>
@@ -133,8 +148,9 @@ const EnhancedDashboardSidebar = () => {
                               <Badge 
                                 variant="secondary" 
                                 className={cn(
-                                  "ml-auto text-xs h-5 px-2 transition-all duration-300",
-                                  isActive && "bg-primary/20 text-primary"
+                                  "ml-auto text-xs h-6 px-3 transition-all duration-300 font-bold rounded-xl",
+                                  "border border-border-soft shadow-soft",
+                                  isActive ? "bg-primary text-primary-foreground shadow-glow" : "bg-muted-soft hover:bg-primary/10"
                                 )}
                               >
                                 {item.badge}
@@ -152,26 +168,35 @@ const EnhancedDashboardSidebar = () => {
         ))}
       </SidebarContent>
         
-      <SidebarFooter className="p-4 border-t border-border/50">
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
-            <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-semibold text-sm">
-                {userName.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm truncate">{userName}</p>
-              <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
+      <SidebarFooter className="p-6 border-t border-border-soft/50">
+        <div className="space-y-4">
+          {/* Premium User Profile Card */}
+          <div className="relative group glass rounded-3xl p-6 border border-border-soft hover:shadow-glow transition-all duration-500">
+            <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 rounded-3xl transition-opacity duration-500"></div>
+            <div className="flex items-center gap-4 relative z-10">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-30 rounded-2xl blur-lg transition-opacity duration-500"></div>
+                <div className="h-12 w-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow relative z-10 transition-all duration-300 group-hover:scale-110">
+                  <span className="text-primary-foreground font-black text-lg font-display">
+                    {userName.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+              <div className="flex-1 min-w-0 space-y-1">
+                <p className="font-bold text-base truncate font-display">{userName}</p>
+                <p className="text-sm text-muted-foreground capitalize font-semibold">{userRole}</p>
+              </div>
             </div>
           </div>
+          
+          {/* Premium Logout Button */}
           <EnhancedButton 
             variant="ghost" 
             size="sm" 
-            className="w-full justify-start text-muted-foreground hover:text-destructive"
+            className="w-full justify-start text-muted-foreground hover:text-destructive p-4 rounded-2xl font-semibold hover:bg-destructive/10 transition-all duration-300 group"
             onClick={handleLogout}
           >
-            <LogOut className="h-4 w-4 mr-2" />
+            <LogOut className="h-5 w-5 mr-3 group-hover:rotate-12 transition-transform duration-300" />
             Sign Out
           </EnhancedButton>
         </div>
