@@ -91,7 +91,7 @@ const EnhancedDashboardSidebar = () => {
             </div>
           </div>
           <div className="space-y-1">
-            <h2 className="font-black text-2xl font-display bg-gradient-primary bg-clip-text text-transparent">WKGH</h2>
+            <h2 className="font-black text-2xl font-display bg-gradient-primary bg-clip-text text-transparent">POS</h2>
             <p className="text-sm text-muted-foreground font-semibold">Hospital Management</p>
           </div>
         </div>
