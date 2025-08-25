@@ -66,7 +66,7 @@ const EnhancedKPICards = () => {
           )}
         >
           {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent rounded-xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-primary/[0.04] to-transparent rounded-xl opacity-100 pointer-events-none" />
           
           <div className="relative space-y-4">
             {/* Header Row */}
