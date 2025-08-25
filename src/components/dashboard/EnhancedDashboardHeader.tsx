@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -20,7 +21,7 @@ const EnhancedDashboardHeader = () => {
     <header className="sticky top-0 z-50 flex h-20 items-center justify-between glass border-b border-border-soft px-8 transition-all duration-500">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="p-2 rounded-xl hover:bg-primary/10 transition-all duration-300" />
-        <div className="font-display text-xl font-bold text-foreground">
+        <div className="font-display text-xl font-semibold text-foreground tracking-tight">
           POS System
         </div>
       </div>
