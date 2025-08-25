@@ -31,33 +31,36 @@ const recentSales = [
 
 const RecentSales = () => {
   return (
-    <Card className="col-span-3">
-      <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
-        <CardDescription>You made 265 sales this month.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-8">
+    <div className="bg-card/40 backdrop-blur-sm border border-border/50 rounded-xl p-6">
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h3 className="text-lg font-mono font-bold tracking-tight">Recent Sales</h3>
+          <p className="text-xs text-muted-foreground font-mono mt-1">265 sales this month</p>
+        </div>
+
+        {/* Sales List */}
+        <div className="space-y-4">
           {recentSales.map((sale, index) => (
-            <div key={index} className="flex items-center">
-              <Avatar className="h-9 w-9">
+            <div key={index} className="flex items-center gap-4 py-2">
+              <Avatar className="h-8 w-8 border border-border/40">
                 <AvatarImage src="" alt="Avatar" />
-                <AvatarFallback>
+                <AvatarFallback className="text-xs font-mono bg-background/60">
                   {sale.name.split(" ").map(n => n[0]).join("")}
                 </AvatarFallback>
               </Avatar>
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">{sale.name}</p>
-                <p className="text-sm text-muted-foreground">{sale.email}</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium font-mono truncate">{sale.name}</p>
+                <p className="text-xs text-muted-foreground font-mono truncate">{sale.email}</p>
               </div>
-              <div className="ml-auto font-medium text-success">
+              <div className="text-sm font-mono font-bold text-success">
                 {sale.amount}
               </div>
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
