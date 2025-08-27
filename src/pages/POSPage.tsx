@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -11,9 +11,11 @@ import {
   Banknote, 
   QrCode,
   Trash2,
-  ShoppingBag
+  ShoppingBag,
+  Printer
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import Receipt from "@/components/pos/Receipt";
 
 interface Product {
   id: string;
@@ -33,6 +35,15 @@ const POSPage = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [lastTransaction, setLastTransaction] = useState<{
+    items: CartItem[];
+    total: number;
+    paymentMethod: string;
+    transactionId: string;
+    timestamp: string;
+  } | null>(null);
+  const receiptRef = useRef<HTMLDivElement>(null);
 
   // Mock product data
   const products: Product[] = [
@@ -96,15 +107,59 @@ const POSPage = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const generateTransactionId = () => {
+    return Math.random().toString(36).substr(2, 9).toUpperCase();
+  };
+
   const handlePayment = (method: string) => {
     if (cart.length === 0) return;
     
+    const transactionId = generateTransactionId();
+    const timestamp = new Date().toLocaleString();
+    const total = calculateTotal();
+    
+    // Store transaction details for receipt
+    setLastTransaction({
+      items: [...cart],
+      total,
+      paymentMethod: method,
+      transactionId,
+      timestamp
+    });
+    
     toast({
       title: "Payment Successful",
-      description: `Paid $${calculateTotal().toFixed(2)} with ${method}`,
+      description: `Paid $${total.toFixed(2)} with ${method}`,
     });
+    
     clearCart();
     setShowPaymentModal(false);
+    setShowReceipt(true);
+  };
+
+  const handlePrintReceipt = () => {
+    if (receiptRef.current) {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Receipt</title>
+              <style>
+                body { margin: 0; padding: 20px; font-family: monospace; }
+                @media print { body { margin: 0; padding: 0; } }
+              </style>
+            </head>
+            <body>
+              ${receiptRef.current.innerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+        printWindow.close();
+      }
+    }
   };
 
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -330,6 +385,57 @@ const POSPage = () => {
               >
                 <QrCode className="w-5 h-5 mr-3" />
                 QR Code
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Receipt Modal */}
+      {showReceipt && lastTransaction && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-background border border-border rounded-2xl p-8 w-full max-w-md shadow-lg animate-scale-in">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-foreground">Receipt</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowReceipt(false)}
+                className="p-2"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            
+            {/* Receipt Preview */}
+            <div className="mb-6 max-h-96 overflow-y-auto border border-border rounded-lg">
+              <Receipt
+                ref={receiptRef}
+                items={lastTransaction.items}
+                total={lastTransaction.total}
+                paymentMethod={lastTransaction.paymentMethod}
+                transactionId={lastTransaction.transactionId}
+                timestamp={lastTransaction.timestamp}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Button
+                size="lg"
+                className="w-full h-14 text-lg font-semibold"
+                onClick={handlePrintReceipt}
+              >
+                <Printer className="w-5 h-5 mr-3" />
+                Print Receipt
+              </Button>
+              
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full h-14 text-lg font-semibold"
+                onClick={() => setShowReceipt(false)}
+              >
+                Close
               </Button>
             </div>
           </div>
