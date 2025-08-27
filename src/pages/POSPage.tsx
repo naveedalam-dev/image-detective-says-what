@@ -111,6 +111,57 @@ const POSPage = () => {
     return Math.random().toString(36).substr(2, 9).toUpperCase();
   };
 
+  const handleCheckout = () => {
+    if (cart.length === 0) return;
+    
+    const transactionId = generateTransactionId();
+    const timestamp = new Date().toLocaleString();
+    const total = calculateTotal();
+    const method = "Cash"; // Default payment method
+    
+    // Store transaction details for receipt
+    setLastTransaction({
+      items: [...cart],
+      total,
+      paymentMethod: method,
+      transactionId,
+      timestamp
+    });
+    
+    toast({
+      title: "Payment Successful",
+      description: `Paid $${total.toFixed(2)} with ${method}`,
+    });
+    
+    clearCart();
+    
+    // Auto-print receipt after a short delay
+    setTimeout(() => {
+      if (receiptRef.current) {
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(`
+            <html>
+              <head>
+                <title>Receipt</title>
+                <style>
+                  body { margin: 0; padding: 20px; font-family: monospace; }
+                  @media print { body { margin: 0; padding: 0; } }
+                </style>
+              </head>
+              <body>
+                ${receiptRef.current.innerHTML}
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+          printWindow.print();
+          printWindow.close();
+        }
+      }
+    }, 100);
+  };
+
   const handlePayment = (method: string) => {
     if (cart.length === 0) return;
     
@@ -324,15 +375,29 @@ const POSPage = () => {
                 <Button
                   size="lg"
                   className="w-full h-14 text-lg font-semibold"
-                  onClick={() => setShowPaymentModal(true)}
+                  onClick={handleCheckout}
                 >
-                  Checkout
+                  Checkout & Print
                 </Button>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Hidden Receipt for Auto-Print */}
+      {lastTransaction && (
+        <div className="fixed -top-full opacity-0 pointer-events-none">
+          <Receipt
+            ref={receiptRef}
+            items={lastTransaction.items}
+            total={lastTransaction.total}
+            paymentMethod={lastTransaction.paymentMethod}
+            transactionId={lastTransaction.transactionId}
+            timestamp={lastTransaction.timestamp}
+          />
+        </div>
+      )}
 
       {/* Payment Modal */}
       {showPaymentModal && (
